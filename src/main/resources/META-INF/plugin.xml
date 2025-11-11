@@ -1,84 +1,52 @@
+<!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
-  <id>com.github.itechbear.clion.cpplint</id>
-  <name>CLion-cpplint</name>
-  <version>1.1.0</version>
-  <vendor email="itechbear@gmail.com" url="https://github.com/itechbear">itechbear</vendor>
+    <id>com.github.meet-radek.clion-cpplint-nova</id>
+    <name>CLion Cpplint Nova</name>
+    <vendor email="meet.radek@gmail.com" url="https://github.com/meet-radek">Radek Vít (fork of Brad Chamberlain's work)</vendor>
 
-  <description><![CDATA[
-      The first C++ lint plugin for Clion. <br /><br />
+    <description><![CDATA[
+        <p>Cpplint inspection for CLion that checks C/C++ code style compliance with Google's C++ Style Guide.</p>
 
-      If you find this plugin useful, welcome to star it. Thanks! <br /><br />
+        <h3>Features:</h3>
+        <ul>
+            <li>Real-time code style checking using cpplint</li>
+            <li>Inline warnings and error highlighting</li>
+            <li>Quick fixes for common violations (header guards, newlines)</li>
+            <li>Configurable Python and cpplint paths</li>
+            <li>Compatible with CLion Nova and CLion Classic</li>
+        </ul>
 
-      <b>Features:</b><br/>
-        Run cpplint.py on the fly when you are editing C++ source code.<br/>
-        Highlight corresponding lines with messages about which cpplint.py complains.<br/>
-        Cygwin/MinGW environment is supported as well.<br/><br/>
-        For advanced cpplint features, such as setting project repository root for header guard checks, use the PyPI
-        hosted cpplint at https://pypi.python.org/pypi/cpplint.<br/>
-
-      <b>Usage:</b><br/>
-        Install this plugin.<br/>
-        Go to File -> Settings -> Other Settings -> cpplint option, fill in the <b>*absolute*</b> paths of python and cpplint.py<br/>
-        Enjoy developing!<br/><br/>
-
-      <b>Please note:</b><br/>
-        If you are using <b>cygwin</b>, use cygwin python package and fill with unix-style paths in the option panel(for example, /usr/bin/python and /home/tools/cpplint.py). <br/>
-        If you are using <b>mingw</b>, use windows python package and fill with windows-style paths in the option panel(for example, C:\Python27\python.exe and C:\cpplint.py).
+        <p><strong>Requirements:</strong> Python and cpplint must be installed separately.</p>
     ]]></description>
 
-  <change-notes><![CDATA[
-    1.1.0 Compatible with 2018.3 <br /><br />
+    <change-notes><![CDATA[
+        <h3>Version 1.0.0 - Nova Edition</h3>
+        <ul>
+            <li>Complete rewrite in Kotlin for CLion 2025.2 Nova compatibility</li>
+            <li>Based on original work by Brad Chamberlain (itechbear)</li>
+            <li>Modern IntelliJ Platform Gradle Plugin 2.x architecture</li>
+            <li>Works with both CLion Nova and CLion Classic</li>
+            <li>Quick fixes for ending newline and header guards</li>
+            <li>Configurable Python and cpplint paths via Settings</li>
+        </ul>
+    ]]></change-notes>
 
-    1.0.9 Compatible with 2018.2 <br /><br />
+    <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.clion</depends>
 
-    1.0.8 Code improvements. Refactored code <br /><br />
+    <extensions defaultExtensionNs="com.intellij">
+        <!-- Cpplint Inspection -->
+        <localInspection
+            implementationClass="com.github.itechbear.clion.cpplint.nova.inspection.CpplintInspection"
+            displayName="cpplint inspection"
+            groupName="C++"
+            id="CpplintInspection"
+            level="WEAK WARNING"
+            enabledByDefault="true"/>
 
-    1.0.7 Bugfix. To be compatible with CLion 2017.3. <br /><br />
-
-    1.0.6 Bugfix. Reverted a change that broke this plugin. <br /><br />
-
-    1.0.5 Bugfixes. See github issues #10,#11,#16. Thanks johnthagen and timothyolt! <br /><br />
-
-    1.0.4 Bugfixes. Thanks to johnthagen and mherb! <br /><br />
-
-    1.0.3 Add support for MinGW. Degrade jdk version to jdk 6 to make Mac OS X users happy. <br /><br />
-
-    Initial commit. <br /><br />
-    ]]>
-  </change-notes>
-
-  <!-- please see http://confluence.jetbrains.com/display/IDEADEV/Build+Number+Ranges for description -->
-  <idea-version since-build="183" until-build="183.*"/>
-
-  <!-- please see http://confluence.jetbrains.com/display/IDEADEV/Plugin+Compatibility+with+IntelliJ+Platform+Products
-       on how to target different products -->
-  <!-- uncomment to enable plugin in all products
-  <depends>com.intellij.modules.lang</depends>
-  -->
-  <depends>com.intellij.modules.clion</depends>
-
-  <extensions defaultExtensionNs="com.intellij">
-    <!-- Add your extensions here -->
-    <localInspection implementationClass="com.github.itechbear.clion.cpplint.CpplintInspection"
-                     displayName="cpplint inspection"
-                     groupName="C++: line"
-                     id="CpplintInspection"
-                     level="WEAK WARNING"
-                     enabledByDefault="true"/>
-    <applicationConfigurable instance="com.github.itechbear.clion.cpplint.Option"
-                             displayName="cpplint option"/>
-  </extensions>
-
-  <application-components>
-    <!-- Add your application components here -->
-  </application-components>
-
-  <project-components>
-    <!-- Add your project components here -->
-  </project-components>
-
-  <actions>
-    <!-- Add your actions here -->
-  </actions>
-
+        <!-- Cpplint Settings -->
+        <applicationConfigurable
+            instance="com.github.itechbear.clion.cpplint.nova.settings.CpplintConfigurable"
+            displayName="Cpplint"/>
+    </extensions>
 </idea-plugin>
