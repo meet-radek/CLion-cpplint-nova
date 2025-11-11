@@ -11,8 +11,10 @@
         <ul>
             <li>Real-time code style checking using cpplint</li>
             <li>Inline warnings and error highlighting</li>
-            <li>Quick fixes for common violations (header guards, newlines)</li>
-            <li>Configurable Python and cpplint paths</li>
+            <li>Quick fixes for common violations (header guards, newlines, trailing whitespace, tab replacement, NOLINT suppression)</li>
+            <li>Suppress false positives with NOLINT comments</li>
+            <li>Auto-detect Python and cpplint installations</li>
+            <li>Configurable Python and cpplint paths with test button</li>
             <li>Compatible with CLion Nova and CLion Classic</li>
         </ul>
 

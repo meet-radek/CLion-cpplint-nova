@@ -6,8 +6,8 @@ A cpplint plugin for JetBrains CLion 2025.2+ with support for CLion Nova. This p
 **Based on the original work by [Hu Dong (itechbear)](https://github.com/itechbear/CLion-cpplint)** – completely rewritten in Kotlin for CLion Nova compatibility.
 <!-- Plugin description end -->
 
-[![JetBrains Plugins](https://img.shields.io/jetbrains/plugin/v/28978-cpplint-nova.svg)](https://plugins.jetbrains.com/plugin/28978-cpplint-nova)
-[![Downloads](https://img.shields.io/jetbrains/plugin/d/28978-cpplint-nova.svg)](https://plugins.jetbrains.com/plugin/28978-cpplint-nova)
+[![JetBrains Plugins](https://img.shields.io/jetbrains/plugin/v/28989-cpplint-nova.svg)](https://plugins.jetbrains.com/plugin/28989-cpplint-nova)
+[![Downloads](https://img.shields.io/jetbrains/plugin/d/28989-cpplint-nova.svg)](https://plugins.jetbrains.com/plugin/28989-cpplint-nova)
 
 ## About
 
@@ -17,8 +17,21 @@ This is a Nova-compatible port of the [original CLion-cpplint plugin](https://gi
 
 - ✅ **CLion Nova compatible** - Works with both CLion Nova and CLion Classic
 - ✅ **Real-time code style checking** - Run cpplint on the fly when editing C++ source code
-- ✅ **Inline highlighting** - Warnings appear directly in your editor
-- ✅ **Quick fixes** - Automatic fixes for common violations (header guards, ending newlines)
+- ✅ **Inline highlighting** - Warnings appear directly in your editor with severity-based colors
+- ✅ **9 Quick fixes** - Automatic fixes for common violations:
+  - Header guards (uses cpplint's expected name)
+  - Ending newlines
+  - Trailing whitespace
+  - Tabs to spaces
+  - Space after comma
+  - Space after comment marker (`//`)
+  - Space after semicolon (in for loops)
+  - Endif comments
+  - NOLINT suppression
+- ✅ **Severity mapping** - Color-coded by confidence: errors (red), warnings (yellow), weak warnings (gray)
+- ✅ **Enable/Disable toggle** - Easily turn inspection on/off in settings
+- ✅ **Auto-detection** - Automatically find Python and cpplint installations (prioritizes matching pairs)
+- ✅ **Configuration testing** - Test button in settings to verify Python and cpplint installation
 - ✅ **Modern architecture** - Built with IntelliJ Platform Gradle Plugin 2.x and Kotlin
 
 ## Quick Start
@@ -72,7 +85,7 @@ This project inherits the license from the original CLion-cpplint plugin by Hu D
 
 ## Links
 
-- **JetBrains Marketplace**: https://plugins.jetbrains.com/plugin/28978-cpplint-nova
+- **JetBrains Marketplace**: https://plugins.jetbrains.com/plugin/28989-cpplint-nova
 - **Original Plugin**: https://github.com/itechbear/CLion-cpplint (by Hu Dong)
 - **cpplint**: https://github.com/cpplint/cpplint
 - **Google C++ Style Guide**: https://google.github.io/styleguide/cppguide.html

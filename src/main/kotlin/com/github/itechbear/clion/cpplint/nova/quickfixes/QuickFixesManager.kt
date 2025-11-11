@@ -18,10 +18,10 @@ object QuickFixesManager {
         "build/class" to null,
         "build/c++11" to null,
         "build/deprecated" to null,
-        "build/endif_comment" to null,
+        "build/endif_comment" to AddEndifCommentFix(),
         "build/explicit_make_pair" to null,
         "build/forward_decl" to null,
-        "build/header_guard" to AddHeaderGuardFix(),
+        "build/header_guard" to null,  // Created dynamically in CpplintRunner with expected guard name
         "build/include" to null,
         "build/include_alpha" to null,
         "build/include_order" to null,
@@ -64,11 +64,11 @@ object QuickFixesManager {
         "runtime/vlog" to null,
         "whitespace/blank_line" to null,
         "whitespace/braces" to null,
-        "whitespace/comma" to null,
-        "whitespace/comments" to null,
+        "whitespace/comma" to AddSpaceAfterCommaFix(),
+        "whitespace/comments" to AddSpaceAfterCommentMarkerFix(),
         "whitespace/empty_conditional_body" to null,
         "whitespace/empty_loop_body" to null,
-        "whitespace/end_of_line" to null,
+        "whitespace/end_of_line" to RemoveTrailingWhitespaceFix(),
         "whitespace/ending_newline" to EndingNewlineFix(),
         "whitespace/forcolon" to null,
         "whitespace/indent" to null,
@@ -76,8 +76,8 @@ object QuickFixesManager {
         "whitespace/newline" to null,
         "whitespace/operators" to null,
         "whitespace/parens" to null,
-        "whitespace/semicolon" to null,
-        "whitespace/tab" to null,
+        "whitespace/semicolon" to AddSpaceAfterSemicolonFix(),
+        "whitespace/tab" to ReplaceTabsWithSpacesFix(),
         "whitespace/todo" to null
     )
 

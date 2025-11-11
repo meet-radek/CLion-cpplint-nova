@@ -16,6 +16,7 @@ gradle-app.setting
 # Kotlin
 *.class
 *.log
+.kotlin/
 
 # Build artifacts - exclude plugin ZIP
 *.jar

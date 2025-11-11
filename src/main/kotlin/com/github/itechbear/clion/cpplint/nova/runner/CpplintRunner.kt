@@ -25,6 +25,35 @@ object CpplintRunner {
     private val logger = Logger.getInstance(CpplintRunner::class.java)
     private val pattern = Regex("""^.+:([0-9]+):\s+(.+)\s+\[([^\]]+)+\]\s+\[([0-9]+)\]$""")
 
+    /**
+     * Maps cpplint confidence level (1-5) to IntelliJ ProblemHighlightType.
+     * Higher confidence = more severe highlighting.
+     */
+    private fun mapConfidenceToSeverity(confidence: Int): ProblemHighlightType {
+        return when (confidence) {
+            5 -> ProblemHighlightType.ERROR           // Confidence 5: Error (red underline)
+            4 -> ProblemHighlightType.WARNING         // Confidence 4: Warning (yellow underline)
+            3 -> ProblemHighlightType.WARNING         // Confidence 3: Warning (yellow underline)
+            2 -> ProblemHighlightType.WEAK_WARNING    // Confidence 2: Weak warning (gray underline)
+            1 -> ProblemHighlightType.WEAK_WARNING    // Confidence 1: Weak warning (gray underline)
+            else -> ProblemHighlightType.WEAK_WARNING // Default: Weak warning
+        }
+    }
+
+    /**
+     * Extracts the expected header guard name from cpplint's error message.
+     * Message format: "#ifndef header guard has wrong style, please use: GUARD_NAME"
+     *
+     * @param message The cpplint error message
+     * @return The expected guard name, or null if it couldn't be extracted
+     */
+    private fun extractExpectedGuardName(message: String): String? {
+        // Pattern to match "please use: GUARD_NAME"
+        val pattern = Regex("please use:\\s+(\\w+)", RegexOption.IGNORE_CASE)
+        val matchResult = pattern.find(message)
+        return matchResult?.groupValues?.getOrNull(1)
+    }
+
     fun lint(file: PsiFile, manager: InspectionManager, document: Document): List<ProblemDescriptor> {
         val cpplintPath = Settings.get(CpplintConfigurable.OPTION_KEY_CPPLINT)
         var cpplintOptions = Settings.get(CpplintConfigurable.OPTION_KEY_CPPLINT_OPTIONS)
@@ -136,6 +165,7 @@ object CpplintRunner {
 
         val (lineNumberStr, message, ruleName, confidenceStr) = matchResult.destructured
         var lineNumber = lineNumberStr.toInt()
+        val confidence = confidenceStr.toIntOrNull() ?: 1  // Default to lowest confidence if parsing fails
         val lineCount = document.lineCount
 
         if (lineCount == 0) {
@@ -157,25 +187,35 @@ object CpplintRunner {
         val text = document.immutableCharSequence.subSequence(lineStartOffset, lineEndOffset).toString()
         val numberOfPrependedSpaces = text.length - text.trimStart().length
 
-        val fix = QuickFixesManager.get(ruleName)
-
-        return if (fix != null) {
-            manager.createProblemDescriptor(
-                file,
-                TextRange.create(lineStartOffset + numberOfPrependedSpaces, lineEndOffset),
-                errorMessage,
-                ProblemHighlightType.GENERIC_ERROR_OR_WARNING,
-                true,
-                fix
-            )
+        // Get rule-specific fix (if available)
+        // For build/header_guard, try to extract the expected guard name from the message
+        val specificFix = if (ruleName == "build/header_guard") {
+            val expectedGuardName = extractExpectedGuardName(message)
+            com.github.itechbear.clion.cpplint.nova.quickfixes.AddHeaderGuardFix(expectedGuardName)
         } else {
-            manager.createProblemDescriptor(
-                file,
-                TextRange.create(lineStartOffset + numberOfPrependedSpaces, lineEndOffset),
-                errorMessage,
-                ProblemHighlightType.GENERIC_ERROR_OR_WARNING,
-                true
-            )
+            QuickFixesManager.get(ruleName)
         }
+
+        // Always offer NOLINT suppression as a fix option
+        val nolintFix = com.github.itechbear.clion.cpplint.nova.quickfixes.SuppressWithNoLintFix(ruleName)
+
+        // Combine fixes: specific fix first (if available), then NOLINT
+        val fixes = if (specificFix != null) {
+            arrayOf(specificFix, nolintFix)
+        } else {
+            arrayOf(nolintFix)
+        }
+
+        // Map cpplint confidence level to IntelliJ severity
+        val highlightType = mapConfidenceToSeverity(confidence)
+
+        return manager.createProblemDescriptor(
+            file,
+            TextRange.create(lineStartOffset + numberOfPrependedSpaces, lineEndOffset),
+            errorMessage,
+            highlightType,
+            true,
+            *fixes
+        )
     }
 }

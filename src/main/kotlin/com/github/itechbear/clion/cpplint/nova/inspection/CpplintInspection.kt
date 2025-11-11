@@ -1,6 +1,8 @@
 package com.github.itechbear.clion.cpplint.nova.inspection
 
 import com.github.itechbear.clion.cpplint.nova.runner.CpplintRunner
+import com.github.itechbear.clion.cpplint.nova.settings.CpplintConfigurable
+import com.github.itechbear.clion.cpplint.nova.settings.Settings
 import com.intellij.codeInspection.InspectionManager
 import com.intellij.codeInspection.LocalInspectionTool
 import com.intellij.codeInspection.ProblemDescriptor
@@ -20,6 +22,11 @@ class CpplintInspection : LocalInspectionTool() {
         manager: InspectionManager,
         isOnTheFly: Boolean
     ): Array<ProblemDescriptor>? {
+        // Check if inspection is enabled
+        if (!Settings.getBoolean(CpplintConfigurable.OPTION_KEY_ENABLED, true)) {
+            return null
+        }
+
         // Only check C/C++ files
         if (!CpplintLanguageType.isCFamily(file)) {
             return null
