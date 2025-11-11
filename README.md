@@ -1,51 +1,127 @@
-# CLion-cpplint
-The first C++ lint plugin for the jetbrains CLion IDE. Install this plugin, set python and cpplint paths in CLion preferences. It will automatically run cpplint against your C++ files while you write code, and show warnings in your editor.
+# CLion Cpplint Nova
 
-Screenshots
-========
+<!-- Plugin description -->
+A cpplint plugin for JetBrains CLion 2025.2+ with support for CLion Nova. This plugin automatically runs cpplint against your C++ files while you write code, showing warnings directly in your editor.
+
+**Based on the original work by [Hu Dong (itechbear)](https://github.com/itechbear/CLion-cpplint)** – completely rewritten in Kotlin for CLion Nova compatibility.
+<!-- Plugin description end -->
+
+## Screenshots
 
 ![Settings](/screenshots/Settings.PNG)
 
 ![Lint](/screenshots/Lint.PNG)
 
-Features
-========
+## Features
 
- - Run cpplint.py on the fly when you are editing C++ source code.
- - Highlight corresponding lines with messages about which cpplint.py complains.
- - Cygwin environment is supported as well.
+- **Real-time code style checking** - Run cpplint.py on the fly when editing C++ source code
+- **Inline highlighting** - Corresponding lines highlighted with cpplint.py warnings
+- **Quick fixes** - Automatic fixes for common violations (header guards, ending newlines)
+- **CLion Nova compatible** - Works with both CLion Nova and CLion Classic
+- **Modern architecture** - Built with IntelliJ Platform Gradle Plugin 2.x and Kotlin
+- **Cygwin/MinGW support** - Works in different Windows environments
 
-Installation
-==========
+## Installation
 
- - [jetbrains plugin repository](https://plugins.jetbrains.com/plugin/7871?pr=clion) 
- 
-Usage
-=====
+### From JetBrains Marketplace
 
- - Install this plugin.
- - Go to File -> Settings -> Other Settings -> cpplint option, fill in the <b>*absolute*</b> paths of python and cpplint.py
- - The plugin should start working when you open/edit C++ files. Don't bother finding menus/actions to run this plugin, because there're not. Enjoy developing!
+1. Go to **File → Settings → Plugins**
+2. Search for "CLion Cpplint Nova"
+3. Click **Install**
+4. Restart CLion
 
-Please note
-===========
+### From Disk (Manual)
 
- - For **Cygwin** users: use cygwin python package and fill with unix-style paths in the option dialog(for example, /usr/bin/python and /home/tools/cpplint.py).
- - For **MinGW** users: use windows-style paths of python and cpplint.py(for example, C:\Python27\python.exe and C:\Users\user\cpplint.py).
+1. Download the latest `CLion-cpplint-nova-X.X.X.zip` from [Releases](https://github.com/meet-radek/CLion-cpplint-nova/releases)
+2. Go to **File → Settings → Plugins**
+3. Click **⚙️** → **Install Plugin from Disk...**
+4. Select the downloaded ZIP file
+5. Restart CLion
 
-Change log
-==========
+## Usage
 
- - 2019.3 Compatible with CLion 2019.3
- - 2019.1.1 Fix issue #27 (Can't find highlight display level: WEAK_WARNING)
- - 2019.1 Compatible with 2019.1
- - 1.1.0 Compatible with 2018.3
- - 1.0.9 Compatible with 2018.2
- - 1.0.8 Code improvements. Refactored code.
- - 1.0.7 Bugfix. To be compatible with CLion 2017.3.
- - 1.0.6 Bugfix. Reverted a change that broke this plugin.
- - 1.0.5 Bugfixes. See github issues #10,#11,#16. Thanks johnthagen and timothyolt!
- - 1.0.4 Bugfixes. Thanks johnthagen and mherb!
- - 1.0.3 Add support for MinGW. Degrade to JDK 6.
- - 1.0.2 Fixed IndexOutOfBound exception.
- - 1.0.0 Initial commit.
+1. **Install Python and cpplint**
+   ```bash
+   pip install cpplint
+   ```
+
+2. **Configure the plugin**
+   - Go to **File → Settings → Cpplint**
+   - Fill in the **absolute paths**:
+     - **Python path**: Path to your Python executable
+     - **Cpplint path**: Path to cpplint executable or script
+     - **Cpplint options**: (Optional) Additional command-line options
+
+3. **Start coding!**
+   - The plugin automatically runs when you open/edit C++ files
+   - No menus or actions needed – it works in the background
+   - Warnings appear inline in your editor
+
+## Configuration Notes
+
+### For Cygwin Users
+- Use the Cygwin python package
+- Fill with unix-style paths in the options dialog
+  - Example: `/usr/bin/python` and `/home/tools/cpplint.py`
+
+### For MinGW Users
+- Use Windows-style paths
+  - Example: `C:\Python\python.exe` and `C:\Users\user\cpplint.py`
+
+### For Regular Windows/Linux/macOS Users
+- **Python path**: Where Python is installed
+  - Windows: `C:\Python312\python.exe`
+  - Linux/Mac: `/usr/bin/python3` or find with `which python3`
+- **Cpplint path**: Where cpplint is installed
+  - After `pip install cpplint`, use:
+    - Windows: `C:\Python312\Scripts\cpplint.exe`
+    - Linux/Mac: `/usr/local/bin/cpplint` or find with `which cpplint`
+
+## Requirements
+
+- CLion 2025.2 or later
+- Python (2.7 or 3.x)
+- cpplint (`pip install cpplint`)
+
+## Change Log
+
+### Version 1.0.0 - Nova Edition
+- Complete rewrite in Kotlin for CLion 2025.2 Nova compatibility
+- Based on original work by Hu Dong (itechbear)
+- Modern IntelliJ Platform Gradle Plugin 2.x architecture
+- Works with both CLion Nova and CLion Classic
+- Quick fixes for ending newline and header guards
+- Configurable Python and cpplint paths via Settings
+
+### Previous Versions (Original Plugin by Hu Dong)
+- **2019.3** - Compatible with CLion 2019.3
+- **2019.1.1** - Fix issue #27 (Can't find highlight display level: WEAK_WARNING)
+- **2019.1** - Compatible with 2019.1
+- **1.1.0** - Compatible with 2018.3
+- **1.0.9** - Compatible with 2018.2
+- Earlier versions... (see [original repository](https://github.com/itechbear/CLion-cpplint))
+
+## Building from Source
+
+See [BUILD.md](BUILD.md) for detailed build instructions.
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit issues or pull requests.
+
+## Credits
+
+- **Original Author**: [Hu Dong (itechbear)](https://github.com/itechbear)
+- **Nova Port**: [Brad Chamberlain (meet-radek)](https://github.com/meet-radek)
+- **cpplint**: [Google's C++ Style Guide](https://google.github.io/styleguide/cppguide.html)
+
+## License
+
+This project inherits the license from the original CLion-cpplint plugin by Hu Dong.
+
+## Links
+
+- **Original Plugin**: https://github.com/itechbear/CLion-cpplint
+- **cpplint**: https://github.com/cpplint/cpplint
+- **Google C++ Style Guide**: https://google.github.io/styleguide/cppguide.html
+- **JetBrains Marketplace**: (coming soon)
